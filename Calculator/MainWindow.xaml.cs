@@ -1,16 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 
 namespace Calculator
 {
@@ -194,7 +187,9 @@ namespace Calculator
                 entryNumbers.Add(0);
             else
             {
+                #pragma warning disable IDE0018 // Inline variable declaration
                 double numberToAdd;
+                #pragma warning restore IDE0018 // Inline variable declaration
                 if (double.TryParse(lblCurrentNumber.Content.ToString().Replace(".", ","), out numberToAdd))
                     entryNumbers.Add(numberToAdd);
             }   
@@ -224,9 +219,7 @@ namespace Calculator
                 }
 
                 AddCurrentNumber();
-
                 numberOperation.Add(entryNumbers.Count - 1, operation);
-
                 AddForPreview();
             }
         }
@@ -262,8 +255,9 @@ namespace Calculator
         private void EnterKeyPressed()
         {
             //neraboti!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-            //bugged cycle to do * and / elements
-            //natiskane = slow bug ili na Pow ne smqta
+            ///add cylce to do * and / and sqrt() and a^b, lastly do + and -, return result
+            ///10000,0000 is bugged only one 0 before decimal separator
+
             if (lblCalculation.Content.ToString() != string.Empty && lblCalculation.Content.ToString().LastOrDefault() != '^')
             {
                 double currentResult = 0;
@@ -277,8 +271,6 @@ namespace Calculator
                     {
                         case "+":
                             currentResult += entryNumbers.ElementAtOrDefault(i);
-                            //currentResult += entryNumbers.ElementAtOrDefault(i) + entryNumbers.ElementAtOrDefault(i + 1);
-                            //i++;
                             break;
                         case "-":
                             currentResult -= entryNumbers.ElementAtOrDefault(i);
@@ -290,7 +282,6 @@ namespace Calculator
                         case "/":
                             currentResult += entryNumbers.ElementAtOrDefault(i) / entryNumbers.ElementAtOrDefault(i + 1);
                             i++;
-                            //currentResult /= entryNumbers.ElementAtOrDefault(i);
                             break;
                         case "sqrt":
                             currentResult += CalculateSqrt(entryNumbers.ElementAtOrDefault(i)) + entryNumbers.ElementAtOrDefault(i + 1);
