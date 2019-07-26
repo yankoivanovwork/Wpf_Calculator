@@ -19,7 +19,6 @@ namespace Calculator
     /// </summary>
     public partial class MainWindow : Window
     {
-        private double currentResult = 0;
         private bool sqrtActivated;
         List<double> entryNumbers = new List<double>();
         Dictionary<int, string> numberOperation = new Dictionary<int, string>();
@@ -112,7 +111,6 @@ namespace Calculator
         private void BtnClear_Click(object sender, RoutedEventArgs e)
         {
             SetFocusToEqualsButton();
-            currentResult = 0;
             ClearCurrentNumberAndCalculationLabel();
             ClearTemporaryData();
         }
@@ -268,6 +266,8 @@ namespace Calculator
             //natiskane = slow bug ili na Pow ne smqta
             if (lblCalculation.Content.ToString() != string.Empty && lblCalculation.Content.ToString().LastOrDefault() != '^')
             {
+                double currentResult = 0;
+
                 if (lblCurrentNumber.Content.ToString() != string.Empty)
                     AddCurrentNumber();
 

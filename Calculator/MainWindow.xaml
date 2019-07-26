@@ -193,6 +193,5 @@
             x:Name="btnClear"
             Click="BtnClear_Click"/>
 
-
     </Grid>
 </Window>
