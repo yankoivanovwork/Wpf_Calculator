@@ -6,208 +6,193 @@
         xmlns:local="clr-namespace:Calculator"
         mc:Ignorable="d"
         Title="Calculator"
-        Height="336"
+        Height="390"
         Width="315" 
         KeyDown="MainWindow_KeyDown"
-        WindowStartupLocation="CenterScreen">
-    <Grid>
-        <Label 
+        WindowStartupLocation="CenterScreen" MinWidth="315" MinHeight="390">
+    <Grid VerticalAlignment="Stretch" Margin="0,0,0,10">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="1*" />
+            <ColumnDefinition Width="1*" />
+            <ColumnDefinition Width="1*" />
+            <ColumnDefinition Width="1*" />
+            <ColumnDefinition Width="1*" />
+            <ColumnDefinition Width="1*" />
+            <ColumnDefinition Width="1*" />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="1*" />
+            <RowDefinition Height="1*" />
+            <RowDefinition Height="1*" />
+            <RowDefinition Height="1*" />
+            <RowDefinition Height="1*" />
+            <RowDefinition Height="1*" />
+            <RowDefinition Height="1*" />
+            <RowDefinition Height="1*" />
+        </Grid.RowDefinitions>
+        <Label
+            Grid.Column="1"
+            Grid.ColumnSpan="5"
+            Grid.Row="0"
             x:Name="lblCalculation" 
-            Content="" 
-            HorizontalAlignment="Left" 
-            Margin="26,10,0,0" 
-            VerticalAlignment="Top"
-            Width="255"
+            Content=""
+            HorizontalAlignment="Stretch"
+            VerticalAlignment="Center"
             HorizontalContentAlignment="Right"/>
         <Label 
+            Grid.Column="2"
+            Grid.ColumnSpan="3"
+            Grid.Row="1"
             x:Name="lblCurrentNumber" 
             Content="" 
-            HorizontalAlignment="Left" 
-            Margin="63,60,0,0" 
-            VerticalAlignment="Top" 
-            Width="175" 
+            HorizontalAlignment="Stretch" 
+            VerticalAlignment="Center" 
             BorderThickness="1" 
             BorderBrush="Black" 
             HorizontalContentAlignment="Right"/>
         <Button 
-            x:Name="btnDivide" 
-            Content="/" 
-            HorizontalAlignment="Left" 
-            Margin="86,106,0,0" 
-            VerticalAlignment="Top" 
-            Width="40" 
-            Height="30"
-            Click="btnDivide_Click"/>
-        <Button 
-            x:Name="btnMultiply" 
-            Content="*" 
-            HorizontalAlignment="Left" 
-            Margin="131,106,0,0" 
-            VerticalAlignment="Top" 
-            Width="40" 
-            Height="30"
-            Click="btnMultiply_Click"/>
-        <Button 
-            x:Name="btnSubtract" 
-            Content="-"
-            HorizontalAlignment="Left" 
-            Margin="176,106,0,0" 
-            VerticalAlignment="Top" 
-            Width="40" 
-            Height="30"
-            Click="btnSubtract_Click"/>
-        <Button 
-            x:Name="btnSqrt" 
+            Grid.Row="3" Grid.Column="1"
+            Margin="5"
+            HorizontalAlignment="Stretch" VerticalAlignment="Stretch" 
             ToolTip="Shortcut -> Shift + 1" 
-            Content="√ " 
-            HorizontalAlignment="Left" 
-            Margin="41,106,0,0" 
-            VerticalAlignment="Top" 
-            Width="40" 
-            Height="30"
-            Click="btnSqrt_Click"/>
+            Content="√"
+            x:Name="btnSqrt"
+            Click="BtnSqrt_Click"/>
         <Button 
-            x:Name="btnAdd" 
-            Content="+" 
-            HorizontalAlignment="Left" 
-            Margin="176,141,0,0" 
-            VerticalAlignment="Top" 
-            Width="40" 
-            Height="65"
-            Click="btnAdd_Click"/>
+            Grid.Row="3" Grid.Column="2"
+            Margin="5"
+            HorizontalAlignment="Stretch" VerticalAlignment="Stretch" 
+            Content="/" 
+            x:Name="btnDivide" 
+            Click="OperationsButton_Click"/>
         <Button 
-            x:Name="btn9" 
-            Content="9" 
-            HorizontalAlignment="Left" 
-            Margin="131,141,0,0" 
-            VerticalAlignment="Top" 
-            Width="40" 
-            Height="30" 
-            Click="btn9_Click"/>
+            Grid.Row="3" Grid.Column="3"
+            Margin="5"
+            HorizontalAlignment="Stretch" VerticalAlignment="Stretch" 
+            Content="*" 
+            x:Name="btnMultiply" 
+            Click="OperationsButton_Click"/>
         <Button 
-            x:Name="btn8" 
-            Content="8" 
-            HorizontalAlignment="Left" 
-            Margin="86,141,0,0" 
-            VerticalAlignment="Top" 
-            Width="40" 
-            Height="30" 
-            Click="btn8_Click"/>
+            Grid.Row="3" Grid.Column="4"
+            Margin="5"
+            HorizontalAlignment="Stretch" VerticalAlignment="Stretch" 
+            Content="-"
+            x:Name="btnSubtract"
+            Click="OperationsButton_Click"/>
         <Button 
-            x:Name="btn7" 
-            Content="7" 
-            HorizontalAlignment="Left"
-            Margin="41,141,0,0"
-            VerticalAlignment="Top"
-            Width="40" Height="30" 
-            Click="btn7_Click"/>
-        <Button 
-            x:Name="btn6" 
-            Content="6"
-            HorizontalAlignment="Left" 
-            Margin="131,176,0,0"
-            VerticalAlignment="Top" 
-            Width="40" Height="30" 
-            Click="btn6_Click"/>
-        <Button 
-            x:Name="btn5" 
-            Content="5" 
-            HorizontalAlignment="Left" 
-            Margin="86,176,0,0" 
-            VerticalAlignment="Top" 
-            Width="40" 
-            Height="30" 
-            Click="btn5_Click"/>
-        <Button 
-            x:Name="btn4" 
-            Content="4" 
-            HorizontalAlignment="Left" 
-            Margin="41,176,0,0" 
-            VerticalAlignment="Top" 
-            Width="40" 
-            Height="30" 
-            Click="btn4_Click"/>
-        <Button 
-            x:Name="btn3" 
-            Content="3" 
-            HorizontalAlignment="Left"
-            Margin="131,211,0,0" 
-            VerticalAlignment="Top" 
-            Width="40" 
-            Height="30" 
-            Click="btn3_Click"/>
-        <Button 
-            x:Name="btn2" 
-            Content="2" 
-            HorizontalAlignment="Left" 
-            Margin="86,211,0,0" 
-            VerticalAlignment="Top" 
-            Width="40" 
-            Height="30" 
-            Click="btn2_Click"/>
-        <Button 
-            x:Name="btn1" 
-            Content="1" 
-            HorizontalAlignment="Left"
-            Margin="41,211,0,0"
-            VerticalAlignment="Top"
-            Width="40"
-            Height="30"
-            Click="btn1_Click"/>
-        <Button 
-            x:Name="btn0" 
-            Content="0" 
-            HorizontalAlignment="Left" 
-            Margin="41,246,0,0" 
-            VerticalAlignment="Top" 
-            Width="85" 
-            Height="30" 
-            Click="btn0_Click"/>
-        <Button 
-            x:Name="btnPow2" 
+            Grid.Row="3" Grid.Column="5"
+            Margin="5"
+            HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
             ToolTip="Shortcut -> Shift + 2" 
-            Content="a^2" 
-            HorizontalAlignment="Left" 
-            Margin="221,106,0,0" 
-            VerticalAlignment="Top"
-            Width="40" 
-            Height="30"
-            Click="btnPow2_Click"/>
+            Content="a^b" 
+            x:Name="btnPow" 
+            Click="BtnPow_Click"/>
         <Button 
-            x:Name="btnDecimalSeparator" 
-            Content="," 
-            HorizontalAlignment="Left"
-            Margin="131,246,0,0" 
-            VerticalAlignment="Top" 
-            Width="40" 
-            Height="30" 
-            Click="btnDecimal_Click"/>
+            Grid.Row="4" Grid.Column="1"
+            Margin="5"
+            HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
+            Content="7" 
+            x:Name="btn7"
+            Click="ButtonNumbers_Click"/>
         <Button 
-            x:Name="btnEquals" 
-            Content="=" 
-            HorizontalAlignment="Left" 
-            Margin="176,211,0,0" 
-            VerticalAlignment="Top" 
-            Width="40" 
-            Height="65"
-            Click="btnEquals_Click"/>
+            Grid.Row="4" Grid.Column="2"
+            Margin="5"
+            HorizontalAlignment="Stretch" VerticalAlignment="Stretch" 
+            Content="8" 
+            x:Name="btn8" 
+            Click="ButtonNumbers_Click"/>
         <Button 
-            x:Name="btnClear" 
-            Content="C" 
-            HorizontalAlignment="Left" 
-            Margin="221,211,0,0" 
-            VerticalAlignment="Top" 
-            Width="40" 
-            Height="65"
-            Click="btnClear_Click"/>
+            Grid.Row="4" Grid.Column="3"
+            Margin="5"
+            HorizontalAlignment="Stretch" VerticalAlignment="Stretch" 
+            Content="9" 
+            x:Name="btn9"
+            Click="ButtonNumbers_Click"/>
         <Button 
-            x:Name="btnDB" 
+            Grid.Row="4" Grid.RowSpan="2" Grid.Column="4"
+            Margin="5"
+            HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
+            Content="+" 
+            x:Name="btnAdd"
+            Click="OperationsButton_Click"/>
+        <Button 
+            Grid.Row="5" Grid.Column="1"
+            Margin="5"
+            HorizontalAlignment="Stretch" VerticalAlignment="Stretch" 
+            Content="4" 
+            x:Name="btn4"
+            Click="ButtonNumbers_Click"/>
+        <Button 
+            Grid.Row="5" Grid.Column="2"
+            Margin="5"
+            HorizontalAlignment="Stretch" VerticalAlignment="Stretch" 
+            Content="5" 
+            x:Name="btn5" 
+            Click="ButtonNumbers_Click"/>
+        <Button 
+            Grid.Row="5" Grid.Column="3"
+            Margin="5"
+            HorizontalAlignment="Stretch" VerticalAlignment="Stretch" 
+            Content="6"
+            x:Name="btn6"
+            Click="ButtonNumbers_Click"/>
+        <Button 
+            Grid.Row="5" Grid.Column="5"
+            Margin="10"
+            HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
             Content="DB" 
-            HorizontalAlignment="Left"
-            Margin="236,163,0,0" 
-            VerticalAlignment="Top"
-            Width="25"
-            Click="btnDB_Click"/>
+            x:Name="btnDB"
+            Click="BtnDB_Click"/>
+        <Button 
+            Grid.Row="6" Grid.RowSpan="2" Grid.Column="4"
+            Margin="5"
+            HorizontalAlignment="Stretch" VerticalAlignment="Stretch" 
+            Content="="
+            x:Name="btnEquals"
+            Click="BtnEquals_Click"/>
+        <Button 
+            Grid.Row="6" Grid.Column="3"
+            Margin="5"
+            HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
+            Content="3"
+            x:Name="btn3"
+            Click="ButtonNumbers_Click"/>
+        <Button 
+            Grid.Row="6" Grid.Column="2"
+            Margin="5"
+            HorizontalAlignment = "Stretch" VerticalAlignment = "Stretch" 
+            Content="2"
+            x:Name="btn2" 
+            Click="ButtonNumbers_Click"/>
+        <Button 
+            Grid.Row="6" Grid.Column="1"
+            Margin="5"
+            HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
+            Content="1"
+            x:Name="btn1" 
+            Click="ButtonNumbers_Click"/>
+        <Button 
+            Grid.Row="7" Grid.Column="1" Grid.ColumnSpan="2"
+            Margin="5"
+            HorizontalAlignment="Stretch" VerticalAlignment="Stretch" 
+            Content="0" 
+            x:Name="btn0" 
+            Click="ButtonNumbers_Click"/>
+        <Button 
+            Grid.Row="7" Grid.Column="3"
+            Margin="5"
+            HorizontalAlignment="Stretch" VerticalAlignment="Stretch" 
+            Content="."
+            x:Name="btnDecimalSeparator" 
+            Click="OperationsButton_Click"/>
+        <Button 
+            Grid.Row="6" Grid.RowSpan="2" Grid.Column="5"
+            Margin="5"
+            HorizontalAlignment="Stretch" VerticalAlignment="Stretch" 
+            Content="C" 
+            x:Name="btnClear"
+            Click="BtnClear_Click"/>
+
 
     </Grid>
 </Window>
