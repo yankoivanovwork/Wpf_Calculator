@@ -250,8 +250,6 @@ namespace Calculator
 
         private void CalculateResult()
         {
-            ///10000,0000 is bugged only one 0 before decimal separator
-
             if (lblCalculation.Content.ToString() != string.Empty)
             {
                 double currentResult = 0;
