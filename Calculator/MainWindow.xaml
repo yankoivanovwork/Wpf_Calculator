@@ -83,7 +83,7 @@
             Grid.Row="3" Grid.Column="5"
             Margin="5"
             HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
-            ToolTip="Shortcut -> Shift + 2" 
+            ToolTip="Shortcut -> Shift + 6" 
             Content="a^b" 
             x:Name="btnPow" 
             Click="OperationsButton_Click"/>
@@ -109,11 +109,33 @@
             x:Name="btn9"
             Click="ButtonNumbers_Click"/>
         <Button 
-            Grid.Row="4" Grid.RowSpan="2" Grid.Column="4"
+            Grid.Row="4" Grid.Column="4"
+            Margin="5"
+            HorizontalAlignment="Stretch" VerticalAlignment="Stretch" 
+            ToolTip="Shortcut -> Shift + 5" 
+            Content="a%b"
+            x:Name="btnPercent"
+            Click="OperationsButton_Click"/>
+        <Button 
+            Grid.Row="5" Grid.Column="4"
             Margin="5"
             HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
             Content="+" 
             x:Name="btnAdd"
+            Click="OperationsButton_Click"/>
+        <Button 
+            Grid.Row="4" Grid.Column="5"
+            Margin="5"
+            HorizontalAlignment="Stretch" VerticalAlignment="Stretch" 
+            Content="CE" 
+            x:Name="btnCE"
+            Click="OperationsButton_Click"/>
+        <Button 
+            Grid.Row="5" Grid.Column="5"
+            Margin="5"
+            HorizontalAlignment="Stretch" VerticalAlignment="Stretch" 
+            Content="bksp" 
+            x:Name="btnBackspace"
             Click="OperationsButton_Click"/>
         <Button 
             Grid.Row="5" Grid.Column="1"
@@ -137,7 +159,7 @@
             x:Name="btn6"
             Click="ButtonNumbers_Click"/>
         <Button 
-            Grid.Row="5" Grid.Column="5"
+            Grid.Row="5" Grid.Column="6"
             Margin="10"
             HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
             Content="DB" 

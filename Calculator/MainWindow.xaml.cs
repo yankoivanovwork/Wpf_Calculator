@@ -48,7 +48,14 @@ namespace Calculator
                         return;
                     }
 
-                    if (e.Key == Key.D2)
+                    if (e.Key == Key.D5)
+                    {
+                        //AddCurrentOperation(elementsDictionary[elementsDictionary[Key.Multiply.ToString()]]);
+                        AddCurrentOperation("%");
+                        return;
+                    }
+
+                    if (e.Key == Key.D6)
                     {
                         AddCurrentOperation(elementsDictionary[elementsDictionary.Keys.ElementAtOrDefault(elementsDictionary.Count - 3)]);
                         return;
@@ -92,11 +99,13 @@ namespace Calculator
 
             if (e.Key == Key.Back)
             {
-                if (lblCurrentNumber.Content.ToString() != string.Empty)
-                {
-                    string currentNumber = lblCurrentNumber.Content.ToString();
-                    lblCurrentNumber.Content = currentNumber.Remove(currentNumber.Length - 1);
-                }
+                BackspaceDelete();
+                return;
+            }
+
+            if (e.Key == Key.Delete)
+            {
+                CeDelete();
             }
         }
 
@@ -135,6 +144,31 @@ namespace Calculator
 
             SetFocusToEqualsButton();
 
+            if (numberOperation.Values.LastOrDefault() == "%")
+            {
+                if (button.Content.ToString() == "-")
+                {
+                    return;
+                }
+            }
+
+            if (button.Content.ToString() == "bksp")
+            {
+                BackspaceDelete();
+                return;
+            }
+
+            if (button.Content.ToString() == "CE")
+            {
+                CeDelete();
+                return;
+            }
+
+            if (button.Content.ToString() == "a%b")
+            {
+                AddCurrentOperation("%");
+            }
+
             if (button.Content.ToString() == elementsDictionary[Key.Subtract.ToString()]) //"-")
             {
                 if (lblCurrentNumber.Content.ToString() == string.Empty)
@@ -166,6 +200,20 @@ namespace Calculator
             Keyboard.Focus(btnEquals);
         }
         
+        private void BackspaceDelete()
+        {
+            if (lblCurrentNumber.Content.ToString() != string.Empty)
+            {
+                string currentNumber = lblCurrentNumber.Content.ToString();
+                lblCurrentNumber.Content = currentNumber.Remove(currentNumber.Length - 1);
+            }
+        }
+
+        private void CeDelete()
+        {
+            lblCurrentNumber.Content = string.Empty;
+        }
+
         private void AddCurrentNumber()
         {
             string currentNumber = lblCurrentNumber.Content.ToString();
@@ -197,6 +245,11 @@ namespace Calculator
                     lblCurrentNumber.Content += elementsDictionary[Key.Subtract.ToString()]; //"-";
                     return;
                 }
+            }
+
+            if (lblCurrentNumber.Content.ToString()=="%" && entryNumbers.Count < 1)
+            {
+                return;
             }
 
             if (lblCurrentNumber.Content.ToString() != string.Empty && lblCurrentNumber.Content.ToString().LastOrDefault() != '-')
@@ -264,6 +317,8 @@ namespace Calculator
                         entryNumbers[i] = Math.Pow(entryNumbers.ElementAtOrDefault(i), entryNumbers.ElementAtOrDefault(i + 1));  
                     else if (numberOperation[numberOperation.Keys.ElementAtOrDefault(i)] == "sqrt" && i < entryNumbers.Count - 1)
                         entryNumbers[i] = CalculateSqrt(entryNumbers.ElementAtOrDefault(i));
+                    else if (numberOperation[numberOperation.Keys.ElementAtOrDefault(i)] == "%" && i < entryNumbers.Count - 1)
+                        entryNumbers[i] = (entryNumbers.ElementAtOrDefault(i) * (entryNumbers.ElementAtOrDefault(i + 1) / 100.0d));
                     else
                         continue;
 
