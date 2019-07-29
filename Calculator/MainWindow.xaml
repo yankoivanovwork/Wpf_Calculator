@@ -57,7 +57,7 @@
             ToolTip="Shortcut -> Shift + 1" 
             Content="√"
             x:Name="btnSqrt"
-            Click="BtnSqrt_Click"/>
+            Click="OperationsButton_Click"/>
         <Button 
             Grid.Row="3" Grid.Column="2"
             Margin="5"
@@ -86,7 +86,7 @@
             ToolTip="Shortcut -> Shift + 2" 
             Content="a^b" 
             x:Name="btnPow" 
-            Click="BtnPow_Click"/>
+            Click="OperationsButton_Click"/>
         <Button 
             Grid.Row="4" Grid.Column="1"
             Margin="5"

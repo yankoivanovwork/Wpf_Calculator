@@ -28,8 +28,10 @@ namespace Calculator
             { "Multiply", "*" },
             { "OemPeriod", "." },
             { "Decimal", "." },
-            { "Power", "^" },
-            { "Sqrt", "sqrt" }
+            { "Pow", "^" },
+            { "a^b", "^" },
+            { "Sqrt", "sqrt" },
+            { "√", "sqrt" }
         };
 
         public MainWindow()
@@ -45,13 +47,13 @@ namespace Calculator
                 {
                     if (e.Key == Key.D1)
                     {
-                        AddCurrentOperation(elementsDictionary["Sqrt"]);
+                        AddCurrentOperation(elementsDictionary[elementsDictionary.Keys.LastOrDefault()]);
                         return;
                     }
 
                     if (e.Key == Key.D2)
                     {
-                        AddCurrentOperation(elementsDictionary["Power"]);
+                        AddCurrentOperation(elementsDictionary[elementsDictionary.Keys.ElementAtOrDefault(elementsDictionary.Count - 3)]);
                         return;
                     }
 
@@ -66,10 +68,10 @@ namespace Calculator
             {
                 if (KeyPressedIsNumber(e.Key))
                 {
-                    if (e.Key.ToString().LastOrDefault() == '0')
+                    if (e.Key.ToString().LastOrDefault() == Key.D0.ToString().LastOrDefault()) //'0')
                     {
                         if (AddZerosCondition() != false)
-                            lblCurrentNumber.Content += "0";
+                            lblCurrentNumber.Content += Key.D0.ToString().LastOrDefault().ToString(); //"0";
 
                         return;
                     }
@@ -87,7 +89,7 @@ namespace Calculator
 
             if (e.Key == Key.Enter)
             {
-                EnterKeyPressed();
+                CalculateResult();
                 return;
             }
 
@@ -119,7 +121,7 @@ namespace Calculator
         {
             Button button = sender as Button;
             SetFocusToEqualsButton();
-            if (button.Content.ToString() == "0")
+            if (button.Content.ToString() == Key.D0.ToString().LastOrDefault().ToString()) //"0")
             {
                 if (AddZerosCondition() != false)
                     lblCurrentNumber.Content += button.Content.ToString();
@@ -130,27 +132,13 @@ namespace Calculator
             lblCurrentNumber.Content += button.Content.ToString();
         }
 
-        private void BtnPow_Click(object sender, RoutedEventArgs e)
-        {
-            SetFocusToEqualsButton();
-
-            AddCurrentOperation(elementsDictionary["Power"]);
-        }
-
-        private void BtnSqrt_Click(object sender, RoutedEventArgs e)
-        {
-            SetFocusToEqualsButton();
-
-            AddCurrentOperation(elementsDictionary["Sqrt"]);
-        }
-
         private void OperationsButton_Click(object sender, RoutedEventArgs e)
         {
             Button button = sender as Button;
 
             SetFocusToEqualsButton();
 
-            if (button.Content.ToString() == "-")
+            if (button.Content.ToString() == elementsDictionary[Key.Subtract.ToString()]) //"-")
             {
                 if (lblCurrentNumber.Content.ToString() == string.Empty)
                     lblCurrentNumber.Content += button.Content.ToString();
@@ -159,13 +147,21 @@ namespace Calculator
 
                 return;
             }
-            
+
+            //if (button.Content.ToString()=="a^b" || button.Content.ToString()== "√")
+            if (button.Content.ToString() == elementsDictionary.Keys.LastOrDefault() 
+                || button.Content.ToString() == elementsDictionary.Keys.ElementAtOrDefault(elementsDictionary.Count - 3))
+            {
+                AddCurrentOperation(elementsDictionary[button.Content.ToString()]);
+                return;
+            }
+
             AddCurrentOperation(button.Content.ToString());
         }
 
         private void BtnEquals_Click(object sender, RoutedEventArgs e)
         {
-            EnterKeyPressed();
+            CalculateResult();
         }
 
         private void SetFocusToEqualsButton()
@@ -183,7 +179,7 @@ namespace Calculator
             if (currentNumber.Contains('-'))
                 currentNumber = currentNumber.Replace("-", string.Empty);
             
-            if (currentNumber.All(zc => zc == '0') || sqrtActivated)
+            if (currentNumber.All(zc => zc == Key.D0.ToString().LastOrDefault()) || sqrtActivated)
                 entryNumbers.Add(0);
             else
             {
@@ -197,11 +193,11 @@ namespace Calculator
 
         private void AddCurrentOperation(string operation)
         {
-            if (operation == "-")
+            if (operation == elementsDictionary[Key.Subtract.ToString()]) //"-")
             {
                 if (lblCurrentNumber.Content.ToString() == string.Empty)
                 {
-                    lblCurrentNumber.Content += "-";
+                    lblCurrentNumber.Content += elementsDictionary[Key.Subtract.ToString()]; //"-";
                     return;
                 }
             }
@@ -226,7 +222,7 @@ namespace Calculator
 
         private void AddForPreview()
         {
-            if (numberOperation[entryNumbers.Count - 1] == "sqrt")
+            if (numberOperation[entryNumbers.Count - 1] == elementsDictionary[elementsDictionary.Keys.LastOrDefault()]) //"sqrt")
             {
                 lblCalculation.Content += numberOperation[entryNumbers.Count - 1] + "(" + entryNumbers.LastOrDefault() + ")";
                 lblCurrentNumber.Content = CalculateSqrt(entryNumbers.LastOrDefault());
@@ -252,51 +248,48 @@ namespace Calculator
             return Math.Sqrt(entryNumber);
         }
 
-        private void EnterKeyPressed()
+        private void CalculateResult()
         {
-            //neraboti!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-            ///add cylce to do * and / and sqrt() and a^b, lastly do + and -, return result
             ///10000,0000 is bugged only one 0 before decimal separator
 
-            if (lblCalculation.Content.ToString() != string.Empty && lblCalculation.Content.ToString().LastOrDefault() != '^')
+            if (lblCalculation.Content.ToString() != string.Empty)
             {
                 double currentResult = 0;
 
                 if (lblCurrentNumber.Content.ToString() != string.Empty)
                     AddCurrentNumber();
 
-                for (int i = 0, j = 0; i < entryNumbers.Count; i++, j++)
+                for (int i = 0; i < numberOperation.Count; i++)
                 {
-                    switch (numberOperation[numberOperation.Keys.ElementAtOrDefault(j)])
-                    {
-                        case "+":
-                            currentResult += entryNumbers.ElementAtOrDefault(i);
-                            break;
-                        case "-":
-                            currentResult -= entryNumbers.ElementAtOrDefault(i);
-                            break;
-                        case "*":
-                            currentResult += entryNumbers.ElementAtOrDefault(i) * entryNumbers.ElementAtOrDefault(i + 1);
-                            i++;
-                            break;
-                        case "/":
-                            currentResult += entryNumbers.ElementAtOrDefault(i) / entryNumbers.ElementAtOrDefault(i + 1);
-                            i++;
-                            break;
-                        case "sqrt":
-                            currentResult += CalculateSqrt(entryNumbers.ElementAtOrDefault(i)) + entryNumbers.ElementAtOrDefault(i + 1);
-                            i++;
-                            break;
-                        case "^":
-                            currentResult += Math.Pow(entryNumbers.ElementAtOrDefault(i), entryNumbers.ElementAtOrDefault(i + 1));
-                            i++;
-                            break;
-                        default:
-                            break;
-                    }
+                    if (numberOperation[numberOperation.Keys.ElementAtOrDefault(i)] == "*" && i < entryNumbers.Count - 1)
+                        entryNumbers[i] = entryNumbers.ElementAtOrDefault(i) * entryNumbers.ElementAtOrDefault(i + 1);
+                    else if (numberOperation[numberOperation.Keys.ElementAtOrDefault(i)] == "/" && i < entryNumbers.Count - 1)
+                        entryNumbers[i] = entryNumbers.ElementAtOrDefault(i) / entryNumbers.ElementAtOrDefault(i + 1);
+                    else if (numberOperation[numberOperation.Keys.ElementAtOrDefault(i)] == "^" && i < entryNumbers.Count - 1)
+                        entryNumbers[i] = Math.Pow(entryNumbers.ElementAtOrDefault(i), entryNumbers.ElementAtOrDefault(i + 1));  
+                    else if (numberOperation[numberOperation.Keys.ElementAtOrDefault(i)] == "sqrt" && i < entryNumbers.Count - 1)
+                        entryNumbers[i] = CalculateSqrt(entryNumbers.ElementAtOrDefault(i));
+                    else
+                        continue;
+
+                    entryNumbers.RemoveAt(i + 1);
+                    numberOperation.Remove(numberOperation.Keys.ElementAtOrDefault(i));
+                    i = -1;
                 }
 
-                /*if (dbConnection.DatabaseAdd(lblCalculation.Content.ToString() + lblCurrentNumber.Content.ToString(), currentResult.ToString()))
+                for (int i = 0; i < entryNumbers.Count; i++)
+                {
+                    if (numberOperation.ContainsKey(numberOperation.Keys.ElementAtOrDefault(i)) 
+                        && numberOperation[numberOperation.Keys.ElementAtOrDefault(i)] == elementsDictionary[Key.Subtract.ToString()]) //"-")    
+                    {
+                        currentResult += entryNumbers.ElementAtOrDefault(i) - entryNumbers.ElementAtOrDefault(i + 1);
+                        entryNumbers.RemoveAt(i + 1);
+                    }
+                    else
+                        currentResult += entryNumbers.ElementAtOrDefault(i);
+                }
+
+                if (dbConnection.DatabaseAdd(lblCalculation.Content.ToString() + lblCurrentNumber.Content.ToString(), currentResult.ToString()))
                 {
                     lblCalculation.Content = string.Empty;
                     lblCurrentNumber.Content = currentResult;
@@ -304,11 +297,7 @@ namespace Calculator
                     ClearTemporaryData();
                 }
                 else
-                    MessageBox.Show("Oops, something went wrong!");*/
-                lblCalculation.Content = string.Empty;
-                lblCurrentNumber.Content = currentResult;
-                currentResult = 0;
-                ClearTemporaryData();
+                    MessageBox.Show("Oops, something went wrong!");
             }
         }
 
@@ -335,7 +324,9 @@ namespace Calculator
 
         private bool AddZerosCondition()
         {
-            if (lblCurrentNumber.Content.ToString().LastOrDefault() != '0' || lblCurrentNumber.Content.ToString().Contains('.'))
+            if (lblCurrentNumber.Content.ToString().LastOrDefault() != Key.D0.ToString().LastOrDefault() //'0' 
+                || lblCurrentNumber.Content.ToString().Length > 1 
+                || lblCurrentNumber.Content.ToString().Contains('.'))
                 return true;
 
             return false;
