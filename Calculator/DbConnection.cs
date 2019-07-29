@@ -14,7 +14,7 @@ namespace Calculator
         public bool DatabaseAdd(string equasion, string result)
         {
             SqlConnection dbConnection = new SqlConnection(connectionString);
-            SqlCommand cmd = new SqlCommand("INSERT INTO CalculatorDB(equation,result) VALUES('" + equasion + "','" + result + "')", dbConnection);
+            SqlCommand cmd = new SqlCommand("INSERT INTO CalculatorDB VALUES('" + equasion + "','" + result + "')", dbConnection);
 
             try
             {
@@ -54,6 +54,9 @@ namespace Calculator
                     }
                 }
             }
+
+            columnData.Reverse();
+
             return columnData;
         }
     }

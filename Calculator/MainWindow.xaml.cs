@@ -7,9 +7,6 @@ using System.Windows.Input;
 
 namespace Calculator
 {
-    /// <summary>
-    /// Interaction logic for MainWindow.xaml
-    /// </summary>
     public partial class MainWindow : Window
     {
         private bool sqrtActivated;
@@ -19,7 +16,7 @@ namespace Calculator
 
         Dictionary<string, string> elementsDictionary = new Dictionary<string, string>()
         {
-            { "oemPlus", "+" },
+            { "OemPlus", "+" },
             { "Add", "+" },
             { "Subtract", "-" },
             { "OemMinus", "-" },
