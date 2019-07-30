@@ -40,16 +40,24 @@
             VerticalAlignment="Center"
             HorizontalContentAlignment="Right"/>
         <Label 
-            Grid.Column="2"
-            Grid.ColumnSpan="3"
+            Grid.Column="1"
+            Grid.ColumnSpan="5"
             Grid.Row="1"
+            Margin="5"
             x:Name="lblCurrentNumber" 
             Content="" 
             HorizontalAlignment="Stretch" 
-            VerticalAlignment="Center" 
+            VerticalAlignment="Stretch" 
             BorderThickness="1" 
             BorderBrush="Black" 
             HorizontalContentAlignment="Right"/>
+        <Button 
+            Grid.Row="2" Grid.Column="1"
+            Margin="10"
+            HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
+            Content="DB" 
+            x:Name="btnDB"
+            Click="BtnDB_Click"/>
         <Button 
             Grid.Row="3" Grid.Column="1"
             Margin="5"
@@ -158,13 +166,6 @@
             Content="6"
             x:Name="btn6"
             Click="ButtonNumbers_Click"/>
-        <Button 
-            Grid.Row="5" Grid.Column="6"
-            Margin="10"
-            HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
-            Content="DB" 
-            x:Name="btnDB"
-            Click="BtnDB_Click"/>
         <Button 
             Grid.Row="6" Grid.RowSpan="2" Grid.Column="4"
             Margin="5"
