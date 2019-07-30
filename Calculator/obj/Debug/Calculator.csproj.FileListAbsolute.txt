@@ -3,7 +3,6 @@ C:\Users\User\source\repos\Calculator\Calculator\bin\Debug\DB_Calculations_log.l
 C:\Users\User\source\repos\Calculator\Calculator\bin\Debug\Calculator.exe.config
 C:\Users\User\source\repos\Calculator\Calculator\bin\Debug\Calculator.exe
 C:\Users\User\source\repos\Calculator\Calculator\bin\Debug\Calculator.pdb
-C:\Users\User\source\repos\Calculator\Calculator\obj\Debug\Calculator.csprojAssemblyReference.cache
 C:\Users\User\source\repos\Calculator\Calculator\obj\Debug\DbPreviewWindow.g.cs
 C:\Users\User\source\repos\Calculator\Calculator\obj\Debug\MainWindow.g.cs
 C:\Users\User\source\repos\Calculator\Calculator\obj\Debug\App.g.cs

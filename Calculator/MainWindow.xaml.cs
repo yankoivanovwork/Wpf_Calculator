@@ -216,7 +216,7 @@ namespace Calculator
             if (currentNumber.Contains('-'))
                 currentNumber = currentNumber.Replace("-", string.Empty);
 
-            if (currentNumber.All(zc => zc == Key.D0.ToString().LastOrDefault()) || sqrtActivated)
+            if (currentNumber.All(cn => cn == Key.D0.ToString().LastOrDefault()) || sqrtActivated)
                 entryNumbers.Add(0);
             else
             {
