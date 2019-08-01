@@ -217,13 +217,13 @@ namespace Calculator
             if (numberOperation.Values.LastOrDefault() == elementsDictionary[btnSqrt.Content.ToString()])
             {
                 double calculateSqrt = CalculateSqrt(entryNumbers.LastOrDefault());
-                lblCalculation.Content += numberOperation.Values.LastOrDefault() + "(" + entryNumbers.LastOrDefault() + ")->" + calculateSqrt;
+                lblCalculation.Content += "(" + numberOperation.Values.LastOrDefault() + "(" + entryNumbers.LastOrDefault() + ")=" + calculateSqrt + ")";
                 lblCurrentNumber.Content = calculateSqrt;
             }
             else if (numberOperation.Values.LastOrDefault() == btnPercent.Content.ToString())
             {
                 double calculatePercent = (entryNumbers.ElementAtOrDefault(entryNumbers.Count - 2) * (entryNumbers.LastOrDefault() / 100.0d));
-                lblCalculation.Content += entryNumbers.LastOrDefault() + numberOperation.Values.LastOrDefault() + "->" + calculatePercent;
+                lblCalculation.Content += "(" + entryNumbers.ElementAtOrDefault(entryNumbers.Count - 2) + "*" + entryNumbers.LastOrDefault() + numberOperation.Values.LastOrDefault() + "=" + calculatePercent + ")";
                 lblCurrentNumber.Content = calculatePercent;
             }
             else
