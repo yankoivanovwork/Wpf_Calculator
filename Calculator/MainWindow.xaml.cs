@@ -252,25 +252,13 @@ namespace Calculator
                 for (int i = 0; i < numberOperation.Count; i++)
                 {
                     if (numberOperation[numberOperation.Keys.ElementAtOrDefault(i)] == "*" && i < entryNumbers.Count - 1)
-                    {
                         entryNumbers[i] = entryNumbers.ElementAtOrDefault(i) * entryNumbers.ElementAtOrDefault(i + 1);
-                        withoutCurrentNumber = false;
-                    } 
                     else if (numberOperation[numberOperation.Keys.ElementAtOrDefault(i)] == "/" && i < entryNumbers.Count - 1)
-                    {
                         entryNumbers[i] = entryNumbers.ElementAtOrDefault(i) / entryNumbers.ElementAtOrDefault(i + 1);
-                        withoutCurrentNumber = false;
-                    }  
                     else if (numberOperation[numberOperation.Keys.ElementAtOrDefault(i)] == "^" && i < entryNumbers.Count - 1)
-                    {
                         entryNumbers[i] = Math.Pow(entryNumbers.ElementAtOrDefault(i), entryNumbers.ElementAtOrDefault(i + 1));
-                        withoutCurrentNumber = false;
-                    }  
                     else if (numberOperation[numberOperation.Keys.ElementAtOrDefault(i)] == "sqrt" && i < entryNumbers.Count - 1)
-                    {
                         entryNumbers[i] = CalculateSqrt(entryNumbers.ElementAtOrDefault(i));
-                        withoutCurrentNumber = true;
-                    }  
                     else if (numberOperation[numberOperation.Keys.ElementAtOrDefault(i)] == "%")
                     {
                         entryNumbers[i] = (entryNumbers.ElementAtOrDefault(i - 1) * (entryNumbers.ElementAtOrDefault(i) / 100.0d));
@@ -279,7 +267,12 @@ namespace Calculator
                     }  
                     else
                         continue;
-                    
+
+                    if (numberOperation.Values.LastOrDefault() == "sqrt")
+                        withoutCurrentNumber = true;
+                    else
+                        withoutCurrentNumber = false;
+
                     entryNumbers.RemoveAt(i + 1);
                     numberOperation.Remove(numberOperation.Keys.ElementAtOrDefault(i));
                     i = -1;
