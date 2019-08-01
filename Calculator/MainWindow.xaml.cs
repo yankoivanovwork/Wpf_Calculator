@@ -9,7 +9,8 @@ namespace Calculator
 {
     public partial class MainWindow : Window
     {
-        private bool sqrtActivated;
+        //*
+        private bool withoutCurrentNumber = false;
         List<double> entryNumbers = new List<double>();
         Dictionary<int, string> numberOperation = new Dictionary<int, string>();
         private DbConnection dbConnection = new DbConnection();
@@ -109,8 +110,21 @@ namespace Calculator
 
         private void BtnClear_Click(object sender, RoutedEventArgs e)
         {
+            Button button = sender as Button;
             SetFocusToEqualsButton();
-            ClearCurrentNumberAndCalculationLabel();
+
+            if (button.Content.ToString() == btnBackspace.Content.ToString())
+            {
+                BackspaceDelete();
+                return;
+            }
+
+            if (button.Content.ToString() == btnCE.Content.ToString())
+            {
+                CeDelete();
+                return;
+            }
+
             ClearTemporaryData();
         }
 
@@ -125,6 +139,7 @@ namespace Calculator
         {
             Button button = sender as Button;
             SetFocusToEqualsButton();
+
             if (button.Content.ToString() == Key.D0.ToString().LastOrDefault().ToString())
             {
                 if (AddZerosCondition() != false)
@@ -139,71 +154,16 @@ namespace Calculator
         private void OperationsButton_Click(object sender, RoutedEventArgs e)
         {
             Button button = sender as Button;
-
             SetFocusToEqualsButton();
 
-            if (numberOperation.Values.LastOrDefault() == btnPercent.Content.ToString())
-            {
-                if (button.Content.ToString() == btnSubtract.Content.ToString())
-                    return;
-            }
-
-            if (button.Content.ToString() == btnBackspace.Content.ToString())
-            {
-                BackspaceDelete();
-                return;
-            }
-
-            if (button.Content.ToString() == btnCE.Content.ToString())
-            {
-                CeDelete();
-                return;
-            }
-
-            if (button.Content.ToString() == btnSubtract.Content.ToString())
-            {
-                if (lblCurrentNumber.Content.ToString() == string.Empty)
-                    lblCurrentNumber.Content += button.Content.ToString();
-                else
-                    AddCurrentOperation(btnSubtract.Content.ToString());
-
-                return;
-            }
-
-            //if "a^b" "√" "a%b"
             if (button.Content.ToString() == btnPow.Content.ToString()
-                || button.Content.ToString() == btnSqrt.Content.ToString()
-                || button.Content.ToString() == btnPercent.Content.ToString())
+                || button.Content.ToString() == btnSqrt.Content.ToString())
             {
                 AddCurrentOperation(elementsDictionary[button.Content.ToString()]);
                 return;
             }
 
             AddCurrentOperation(button.Content.ToString());
-        }
-
-        private void BtnEquals_Click(object sender, RoutedEventArgs e)
-        {
-            CalculateResult();
-        }
-
-        private void SetFocusToEqualsButton()
-        {
-            Keyboard.Focus(btnEquals);
-        }
-
-        private void BackspaceDelete()
-        {
-            if (lblCurrentNumber.Content.ToString() != string.Empty)
-            {
-                string currentNumber = lblCurrentNumber.Content.ToString();
-                lblCurrentNumber.Content = currentNumber.Remove(currentNumber.Length - 1);
-            }
-        }
-
-        private void CeDelete()
-        {
-            lblCurrentNumber.Content = string.Empty;
         }
 
         private void AddCurrentNumber()
@@ -216,7 +176,10 @@ namespace Calculator
             if (currentNumber.Contains('-'))
                 currentNumber = currentNumber.Replace("-", string.Empty);
 
-            if (currentNumber.All(cn => cn == Key.D0.ToString().LastOrDefault()) || sqrtActivated)
+            //if (currentNumber.All(cn => cn == Key.D0.ToString().LastOrDefault()) || sqrtActivated || numberOperation.Values.LastOrDefault() == "%")
+            if (currentNumber.All(cn => cn == Key.D0.ToString().LastOrDefault()) 
+                || numberOperation.Values.LastOrDefault() == "sqrt" 
+                || numberOperation.Values.LastOrDefault() == "%")
                 entryNumbers.Add(0);
             else
             {
@@ -230,19 +193,20 @@ namespace Calculator
 
         private void AddCurrentOperation(string operation)
         {
-            if (operation == btnSubtract.Content.ToString())
+            if (operation == btnSubtract.Content.ToString() && lblCurrentNumber.Content.ToString() == string.Empty)
             {
-                if (lblCurrentNumber.Content.ToString() == string.Empty)
-                {
-                    lblCurrentNumber.Content += btnSubtract.Content.ToString();
-                    return;
-                }
+                lblCurrentNumber.Content += btnSubtract.Content.ToString();
+                return;
             }
 
-            if (lblCurrentNumber.Content.ToString() == btnPercent.Content.ToString() && entryNumbers.Count < 1)
+            if (operation == btnPercent.Content.ToString() && entryNumbers.Count < 1)
+            {
                 return;
+            }
 
-            if (lblCurrentNumber.Content.ToString() != string.Empty
+            if ((lblCurrentNumber.Content.ToString() != string.Empty
+                || numberOperation.Values.LastOrDefault() == btnPercent.Content.ToString()
+                || numberOperation.Values.LastOrDefault() == elementsDictionary[btnSqrt.Content.ToString()])
                 && lblCurrentNumber.Content.ToString().LastOrDefault() != btnSubtract.Content.ToString().FirstOrDefault())
             {
                 if (operation == ".")
@@ -263,30 +227,31 @@ namespace Calculator
 
         private void AddForPreview()
         {
-            if (numberOperation[entryNumbers.Count - 1] == elementsDictionary[btnSqrt.Content.ToString()])
+            if (numberOperation.Values.LastOrDefault() == elementsDictionary[btnSqrt.Content.ToString()])
             {
-                lblCalculation.Content += numberOperation[entryNumbers.Count - 1] + "(" + entryNumbers.LastOrDefault() + ")";
-                lblCurrentNumber.Content = CalculateSqrt(entryNumbers.LastOrDefault());
-                sqrtActivated = true;
+                double calculateSqrt = CalculateSqrt(entryNumbers.LastOrDefault());
+                lblCalculation.Content += numberOperation.Values.LastOrDefault() + "(" + entryNumbers.LastOrDefault() + ")->" + calculateSqrt;
+                lblCurrentNumber.Content = calculateSqrt;
+            }
+            else if (numberOperation.Values.LastOrDefault() == btnPercent.Content.ToString())
+            {
+                double calculatePercent = (entryNumbers.ElementAtOrDefault(entryNumbers.Count - 2) * (entryNumbers.LastOrDefault() / 100.0d));
+                lblCalculation.Content += entryNumbers.LastOrDefault() + numberOperation.Values.LastOrDefault() + "->" + calculatePercent;
+                lblCurrentNumber.Content = calculatePercent;
             }
             else
             {
-                if (!sqrtActivated)
+                if (numberOperation.Values.ElementAtOrDefault(numberOperation.Count - 2) != elementsDictionary[btnSqrt.Content.ToString()]
+                    && numberOperation.Values.ElementAtOrDefault(numberOperation.Count - 2) != btnPercent.Content.ToString())
                 {
-                    lblCalculation.Content += entryNumbers.LastOrDefault() + numberOperation[numberOperation.Keys.LastOrDefault()];
+                    lblCalculation.Content += entryNumbers.LastOrDefault() + numberOperation.Values.LastOrDefault();
                     lblCurrentNumber.Content = string.Empty;
                 }
                 else
                 {
-                    lblCalculation.Content += numberOperation[numberOperation.Keys.LastOrDefault()];
-                    sqrtActivated = false;
+                    lblCalculation.Content += numberOperation.Values.LastOrDefault();
                 }
             }
-        }
-
-        private double CalculateSqrt(double entryNumber)
-        {
-            return Math.Sqrt(entryNumber);
         }
 
         private void CalculateResult()
@@ -294,6 +259,7 @@ namespace Calculator
             if (lblCalculation.Content.ToString() != string.Empty)
             {
                 double currentResult = 0;
+                string dbCalculationString = string.Empty;
 
                 if (lblCurrentNumber.Content.ToString() != string.Empty)
                     AddCurrentNumber();
@@ -301,18 +267,34 @@ namespace Calculator
                 for (int i = 0; i < numberOperation.Count; i++)
                 {
                     if (numberOperation[numberOperation.Keys.ElementAtOrDefault(i)] == "*" && i < entryNumbers.Count - 1)
+                    {
                         entryNumbers[i] = entryNumbers.ElementAtOrDefault(i) * entryNumbers.ElementAtOrDefault(i + 1);
+                        withoutCurrentNumber = false;
+                    } 
                     else if (numberOperation[numberOperation.Keys.ElementAtOrDefault(i)] == "/" && i < entryNumbers.Count - 1)
+                    {
                         entryNumbers[i] = entryNumbers.ElementAtOrDefault(i) / entryNumbers.ElementAtOrDefault(i + 1);
+                        withoutCurrentNumber = false;
+                    }  
                     else if (numberOperation[numberOperation.Keys.ElementAtOrDefault(i)] == "^" && i < entryNumbers.Count - 1)
+                    {
                         entryNumbers[i] = Math.Pow(entryNumbers.ElementAtOrDefault(i), entryNumbers.ElementAtOrDefault(i + 1));
+                        withoutCurrentNumber = false;
+                    }  
                     else if (numberOperation[numberOperation.Keys.ElementAtOrDefault(i)] == "sqrt" && i < entryNumbers.Count - 1)
+                    {
                         entryNumbers[i] = CalculateSqrt(entryNumbers.ElementAtOrDefault(i));
-                    else if (numberOperation[numberOperation.Keys.ElementAtOrDefault(i)] == "%" && i < entryNumbers.Count - 1)
-                        entryNumbers[i] = (entryNumbers.ElementAtOrDefault(i) * (entryNumbers.ElementAtOrDefault(i + 1) / 100.0d));
+                        withoutCurrentNumber = true;
+                    }  
+                    else if (numberOperation[numberOperation.Keys.ElementAtOrDefault(i)] == "%")
+                    {
+                        entryNumbers[i] = (entryNumbers.ElementAtOrDefault(i - 1) * (entryNumbers.ElementAtOrDefault(i) / 100.0d));
+                        withoutCurrentNumber = true;
+                        continue;
+                    }  
                     else
                         continue;
-
+                    
                     entryNumbers.RemoveAt(i + 1);
                     numberOperation.Remove(numberOperation.Keys.ElementAtOrDefault(i));
                     i = -1;
@@ -330,12 +312,15 @@ namespace Calculator
                         currentResult += entryNumbers.ElementAtOrDefault(i);
                 }
 
-                if (dbConnection.DatabaseAdd(lblCalculation.Content.ToString() + lblCurrentNumber.Content.ToString(), currentResult.ToString()))
+                if (withoutCurrentNumber)
+                    dbCalculationString = lblCalculation.Content.ToString();
+                else
+                    dbCalculationString = lblCalculation.Content.ToString() + lblCurrentNumber.Content.ToString();
+
+                if (dbConnection.DatabaseAdd(dbCalculationString, currentResult.ToString()))
                 {
-                    lblCalculation.Content = string.Empty;
-                    lblCurrentNumber.Content = currentResult;
-                    currentResult = 0;
                     ClearTemporaryData();
+                    lblCurrentNumber.Content = currentResult;
                 }
                 else
                     MessageBox.Show("Oops, something went wrong!");
@@ -344,15 +329,39 @@ namespace Calculator
 
         private void ClearTemporaryData()
         {
-            sqrtActivated = false;
+            lblCalculation.Content = string.Empty;
+            CeDelete();
             entryNumbers.Clear();
             numberOperation.Clear();
         }
 
-        private void ClearCurrentNumberAndCalculationLabel()
+        private void BackspaceDelete()
         {
-            lblCalculation.Content = string.Empty;
+            if (lblCurrentNumber.Content.ToString() != string.Empty)
+            {
+                string currentNumber = lblCurrentNumber.Content.ToString();
+                lblCurrentNumber.Content = currentNumber.Remove(currentNumber.Length - 1);
+            }
+        }
+
+        private void CeDelete()
+        {
             lblCurrentNumber.Content = string.Empty;
+        }
+
+        private void BtnEquals_Click(object sender, RoutedEventArgs e)
+        {
+            CalculateResult();
+        }
+
+        private void SetFocusToEqualsButton()
+        {
+            Keyboard.Focus(btnEquals);
+        }
+
+        private double CalculateSqrt(double entryNumber)
+        {
+            return Math.Sqrt(entryNumber);
         }
 
         private bool KeyPressedIsNumber(Key pressedKey)
