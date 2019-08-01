@@ -27,7 +27,7 @@ namespace Calculator
             { "Decimal", "." },
             { "Pow", "^" },
             { "a^b", "^" },
-            { "a%b", "%" },
+            { "%", "%" },
             { "Sqrt", "sqrt" },
             { "√", "sqrt" }
         };
@@ -175,16 +175,13 @@ namespace Calculator
             if (currentNumber.Contains('-'))
                 currentNumber = currentNumber.Replace("-", string.Empty);
 
-            //if (currentNumber.All(cn => cn == Key.D0.ToString().LastOrDefault()) || sqrtActivated || numberOperation.Values.LastOrDefault() == "%")
-            if (currentNumber.All(cn => cn == Key.D0.ToString().LastOrDefault()) 
-                || numberOperation.Values.LastOrDefault() == "sqrt" 
-                || numberOperation.Values.LastOrDefault() == "%")
+            if (currentNumber.All(cn => cn == Key.D0.ToString().LastOrDefault())
+                || numberOperation.Values.LastOrDefault() == elementsDictionary[btnSqrt.Content.ToString()]
+                || numberOperation.Values.LastOrDefault() == btnPercent.Content.ToString())
                 entryNumbers.Add(0);
             else
             {
-#pragma warning disable IDE0018 // Inline variable declaration
                 double numberToAdd;
-#pragma warning restore IDE0018 // Inline variable declaration
                 if (double.TryParse(lblCurrentNumber.Content.ToString().Replace(".", ","), out numberToAdd))
                     entryNumbers.Add(numberToAdd);
             }
