@@ -329,6 +329,7 @@ namespace Calculator
 
         private void ClearTemporaryData()
         {
+            withoutCurrentNumber = false;
             lblCalculation.Content = string.Empty;
             CeDelete();
             entryNumbers.Clear();
