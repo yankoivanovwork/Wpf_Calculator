@@ -9,7 +9,6 @@ namespace Calculator
 {
     public partial class MainWindow : Window
     {
-        //*
         private bool withoutCurrentNumber = false;
         List<double> entryNumbers = new List<double>();
         Dictionary<int, string> numberOperation = new Dictionary<int, string>();
@@ -200,9 +199,7 @@ namespace Calculator
             }
 
             if (operation == btnPercent.Content.ToString() && entryNumbers.Count < 1)
-            {
                 return;
-            }
 
             if ((lblCurrentNumber.Content.ToString() != string.Empty
                 || numberOperation.Values.LastOrDefault() == btnPercent.Content.ToString()
@@ -248,9 +245,7 @@ namespace Calculator
                     lblCurrentNumber.Content = string.Empty;
                 }
                 else
-                {
                     lblCalculation.Content += numberOperation.Values.LastOrDefault();
-                }
             }
         }
 
