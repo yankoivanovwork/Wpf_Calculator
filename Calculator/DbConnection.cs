@@ -42,7 +42,7 @@ namespace Calculator
                     {
                         while (reader.Read())
                         {
-                            if (!char.IsDigit(reader.GetString(1).LastOrDefault()) && reader.GetString(1).LastOrDefault() != '%')
+                            if (!char.IsDigit(reader.GetString(1).LastOrDefault())) // && reader.GetString(1).LastOrDefault() != '%')
                             {
                                 columnData.Add(reader.GetString(1).Remove(reader.GetString(1).Length - 1) + "=" + reader.GetString(2));
                             }

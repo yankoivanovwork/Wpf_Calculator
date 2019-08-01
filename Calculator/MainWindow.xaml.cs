@@ -113,18 +113,11 @@ namespace Calculator
             SetFocusToEqualsButton();
 
             if (button.Content.ToString() == btnBackspace.Content.ToString())
-            {
                 BackspaceDelete();
-                return;
-            }
-
-            if (button.Content.ToString() == btnCE.Content.ToString())
-            {
+            else if (button.Content.ToString() == btnCE.Content.ToString())
                 CeDelete();
-                return;
-            }
-
-            ClearTemporaryData();
+            else
+                ClearTemporaryData();
         }
 
         private void BtnDB_Click(object sender, RoutedEventArgs e)
